@@ -30,6 +30,18 @@ public class BBST<T extends Comparable> {
     public Node root = null;
     public ArrayList<Node> unorderedNodeList = new ArrayList<Node>();
 
+    private void weightDistribute(Node current) {
+        if (current != null) {
+            if (current.left != null) {
+                current.leftWeight = current.left.rightWeight + current.left.leftWeight + 1;
+            }
+            if (current.right != null) {
+                current.rightWeight = current.right.rightWeight + current.right.leftWeight + 1;
+            }
+            weightDistribute(current.parent);
+        }
+    }
+
     public void add(T data) {
         if(root == null){
             root = new Node(data);
