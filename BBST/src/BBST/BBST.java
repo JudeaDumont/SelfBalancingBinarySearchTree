@@ -41,7 +41,8 @@ public class BBST<T extends Comparable> {
             weightDistribute(current.parent);
         }
     }
-
+    //The pattern needs to rebalance/compensate upon addition of a new node
+    //rotate then add
     public void add(T data) {
         if(root == null){
             root = new Node(data);
