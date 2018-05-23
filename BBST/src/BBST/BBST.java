@@ -43,6 +43,7 @@ public class BBST<T extends Comparable> {
     }
     //The pattern needs to rebalance/compensate upon addition of a new node
     //rotate then add
+//    There are multiple types of self balancing binary search trees. implement aAVL, then red and black trees
     public void add(T data) {
         if(root == null){
             root = new Node(data);
