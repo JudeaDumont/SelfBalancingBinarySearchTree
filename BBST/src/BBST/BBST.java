@@ -45,7 +45,7 @@ public class BBST<T extends Comparable> {
     //rotate then add
 //    There are multiple types of self balancing binary search trees. implement aAVL, then red and black trees
 //    This will be a weight balanced tree from the weight at the root, you can tell the levels of each node.
-
+//the max level of a given sub tree is log(n) of that subtree where n is the weight as measuring the number of nodes.
     public void add(T data) {
         if(root == null){
             root = new Node(data);
