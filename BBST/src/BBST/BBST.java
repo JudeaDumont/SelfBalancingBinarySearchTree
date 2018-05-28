@@ -78,6 +78,7 @@ public class BBST<T extends Comparable> {
         }
     }
 
+    //simple walk
     private void walk(Node curr, Node newNode) {
         if(newNode.compareTo(curr) > 0){
             if(curr.right == null){
