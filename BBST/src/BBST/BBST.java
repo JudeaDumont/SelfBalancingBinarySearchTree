@@ -49,11 +49,53 @@ public class BBST<T extends Comparable> {
     //blalala
     //I guess I'll actually do something about this.
     public void add(T data) {
+        Node newNode = new Node(data);
         if(root == null){
-            root = new Node(data);
+            root = newNode;
         }
         else{
+            walk(root, newNode);
+            rotate(newNode);
+        }
+    }
 
+    private void rotate(Node newNode) {
+        Node parent = newNode.parent;
+        Node grandParent = parent.parent;
+        if(parent != null && grandParent != null){
+            if(parent.left == null && grandParent.right == null){
+
+            }
+            else if(parent.right == null && grandParent.left == null){
+
+            }
+            else if(parent.right == null && grandParent.right == null){
+
+            }
+            else if(parent.left == null && grandParent.left == null){
+
+            }
+        }
+    }
+
+    private void walk(Node curr, Node newNode) {
+        if(newNode.compareTo(curr) > 0){
+            if(curr.right == null){
+                curr.right = newNode;
+                newNode.parent=curr;
+            }
+            else{
+                walk(curr, newNode);
+            }
+        }
+        else{
+            if(curr.left == null){
+                curr.left = newNode;
+                newNode.parent=curr;
+            }
+            else{
+                walk(curr, newNode);
+            }
         }
     }
 
