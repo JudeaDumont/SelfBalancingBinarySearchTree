@@ -47,6 +47,7 @@ public class BBST<T extends Comparable> {
 //    This will be a weight balanced tree from the weight at the root, you can tell the levels of each node.
 //    the max level of a given sub tree is log(n) of that subtree where n is the weight as measuring the number of nodes.
     //blalala
+    //I guess I'll actually do something about this.
     public void add(T data) {
         if(root == null){
             root = new Node(data);
