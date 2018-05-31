@@ -61,6 +61,8 @@ public class BBST<T extends Comparable> {
         }
     }
 
+    //determine left and right weight and if they are out of balance at a given node,
+    // perform a rotate specific to that unbalance
     private void rotate(Node newNode) {
         Node parent = newNode.parent;
         Node grandParent = parent.parent;
