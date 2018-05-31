@@ -48,6 +48,8 @@ public class BBST<T extends Comparable> {
 //    the max level of a given sub tree is log(n) of that subtree where n is the weight as measuring the number of nodes.
     //blalala
     //I guess I'll actually do something about this.
+
+    //Amortized overhead or per operation overhead?
     public void add(T data) {
         Node newNode = new Node(data);
         if(root == null){
