@@ -27,6 +27,7 @@ public class BBST<T extends Comparable> {
             return beforeOrAfter;
         }
     }
+
     public Node root = null;
     public ArrayList<Node> unorderedNodeList = new ArrayList<Node>();
 
@@ -52,10 +53,9 @@ public class BBST<T extends Comparable> {
     //Amortized overhead or per operation overhead?
     public void add(T data) {
         Node newNode = new Node(data);
-        if(root == null){
+        if (root == null) {
             root = newNode;
-        }
-        else{
+        } else {
             walk(root, newNode);
             rotate(newNode);
         }
@@ -64,41 +64,88 @@ public class BBST<T extends Comparable> {
     //determine left and right weight and if they are out of balance at a given node,
     // perform a rotate specific to that unbalance
     private void rotate(Node newNode) {
-        Node parent = newNode.parent;
-        Node grandParent = parent.parent;
-        if(parent != null && grandParent != null){
-            if(parent.left == null && grandParent.right == null){
-
+        Node parent = null;
+        parent = newNode.parent;
+        Node grandParent = null;
+        Node grandgrandParent = null;
+        if (parent != null) {
+            grandParent = parent.parent;
+            if (grandParent != null) {
+                grandgrandParent = parent.parent.parent;
             }
-            else if(parent.right == null && grandParent.left == null){
+        }
+        if (parent != null && grandParent != null) {
+            if (parent.left == null && grandParent.right == null) {
+                newNode.left = parent;
+                newNode.right = grandParent;
+                parent.right = null;
+                grandParent.left = null;
+                if (grandParent == root) {
+                    root = newNode;
+                } else {
+                    if (grandgrandParent.left == grandParent) {
+                        grandgrandParent.left = newNode;
+                    } else {
+                        grandgrandParent.right = newNode;
+                    }
+                }
+            } else if (parent.right == null && grandParent.left == null) {
+                newNode.right = parent;
+                newNode.left = grandParent;
+                parent.left = null;
+                grandParent.right = null;
+                if (grandParent == root) {
+                    root = newNode;
+                } else {
+                    if (grandgrandParent.left == grandParent) {
+                        grandgrandParent.left = newNode;
+                    } else {
+                        grandgrandParent.right = newNode;
+                    }
+                }
+            } else if (parent.right == null && grandParent.right == null) {
+                parent.right = grandParent;
+                grandParent.left = null;
+                if (grandParent == root) {
+                    root = parent;
+                } else {
+                    if (grandgrandParent.left == grandParent) {
+                        grandgrandParent.left = parent;
+                    } else {
+                        grandgrandParent.right = parent;
+                    }
+                }
 
-            }
-            else if(parent.right == null && grandParent.right == null){
-
-            }
-            else if(parent.left == null && grandParent.left == null){
-
+            } else if (parent.left == null && grandParent.left == null) {
+                parent.left = grandParent;
+                grandParent.right = null;
+                if (grandParent == root) {
+                    root = parent;
+                } else {
+                    if (grandgrandParent.right == grandParent) {
+                        grandgrandParent.right = parent;
+                    } else {
+                        grandgrandParent.left = parent;
+                    }
+                }
             }
         }
     }
 
     //simple walk
     private void walk(Node curr, Node newNode) {
-        if(newNode.compareTo(curr) > 0){
-            if(curr.right == null){
+        if (newNode.compareTo(curr) > 0) {
+            if (curr.right == null) {
                 curr.right = newNode;
-                newNode.parent=curr;
-            }
-            else{
+                newNode.parent = curr;
+            } else {
                 walk(curr, newNode);
             }
-        }
-        else{
-            if(curr.left == null){
+        } else {
+            if (curr.left == null) {
                 curr.left = newNode;
-                newNode.parent=curr;
-            }
-            else{
+                newNode.parent = curr;
+            } else {
                 walk(curr, newNode);
             }
         }
