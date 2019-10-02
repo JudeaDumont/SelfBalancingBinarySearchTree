@@ -57,78 +57,38 @@ public class BBST<T extends Comparable> {
             root = newNode;
         } else {
             walk(root, newNode);
-            rotate(newNode);
+            //rotate(newNode);
         }
     }
 
     //determine left and right weight and if they are out of balance at a given node,
     // perform a rotate specific to that unbalance
-    private void rotate(Node newNode) {
-        Node parent = null;
-        parent = newNode.parent;
-        Node grandParent = null;
-        Node grandgrandParent = null;
-        if (parent != null) {
-            grandParent = parent.parent;
-            if (grandParent != null) {
-                grandgrandParent = parent.parent.parent;
-            }
-        }
-        if (parent != null && grandParent != null) {
-            if (parent.left == null && grandParent.right == null) {
-                newNode.left = parent;
-                newNode.right = grandParent;
-                parent.right = null;
-                grandParent.left = null;
-                if (grandParent == root) {
-                    root = newNode;
-                } else {
-                    if (grandgrandParent.left == grandParent) {
-                        grandgrandParent.left = newNode;
-                    } else {
-                        grandgrandParent.right = newNode;
-                    }
-                }
-            } else if (parent.right == null && grandParent.left == null) {
-                newNode.right = parent;
-                newNode.left = grandParent;
-                parent.left = null;
-                grandParent.right = null;
-                if (grandParent == root) {
-                    root = newNode;
-                } else {
-                    if (grandgrandParent.left == grandParent) {
-                        grandgrandParent.left = newNode;
-                    } else {
-                        grandgrandParent.right = newNode;
-                    }
-                }
-            } else if (parent.right == null && grandParent.right == null) {
-                parent.right = grandParent;
-                grandParent.left = null;
-                if (grandParent == root) {
-                    root = parent;
-                } else {
-                    if (grandgrandParent.left == grandParent) {
-                        grandgrandParent.left = parent;
-                    } else {
-                        grandgrandParent.right = parent;
-                    }
-                }
+    private void reverseWalk(Node current) {
+        if(current == root)
+        {
 
-            } else if (parent.left == null && grandParent.left == null) {
-                parent.left = grandParent;
-                grandParent.right = null;
-                if (grandParent == root) {
-                    root = parent;
-                } else {
-                    if (grandgrandParent.right == grandParent) {
-                        grandgrandParent.right = parent;
-                    } else {
-                        grandgrandParent.left = parent;
-                    }
-                }
+        }
+        else if(current == current.parent.left)
+        {
+            ++current.parent.leftWeight;
+            if(current.parent.leftWeight - current.parent.rightWeight > 1)
+            {
+                //some kind of rotation
             }
+            reverseWalk(current.parent);
+        }
+        else if(current == current.parent.right)
+        {
+            ++current.parent.rightWeight;
+            if(Math.abs(current.parent.rightWeight - current.parent.leftWeight) > 1)
+            {
+                //some kind of rotation
+            }
+            reverseWalk(current.parent);
+        }
+        else
+        {
+            System.out.println("ERROR: Reverse Walk Failed to Find a Path To Root!\n\n");
         }
     }
 
@@ -136,17 +96,67 @@ public class BBST<T extends Comparable> {
     private void walk(Node curr, Node newNode) {
         if (newNode.compareTo(curr) > 0) {
             if (curr.right == null) {
+                ++curr.rightWeight;
                 curr.right = newNode;
                 newNode.parent = curr;
+                reverseWalk(curr);
             } else {
-                walk(curr, newNode);
+                if(curr.left == null)
+                {
+                    --curr.rightWeight;
+                    newNode.left = curr;
+                    ++newNode.leftWeight;
+                    newNode.parent = curr.parent;
+                    curr.parent = newNode;
+                    newNode.right = curr.right;
+                    curr.right.parent = newNode;
+                    curr.right = null;
+                    ++newNode.rightWeight;
+                    if(root == curr)
+                    {
+                        root = newNode;
+                    }
+                    else
+                    {
+                        newNode.parent.left = newNode;
+                        reverseWalk(newNode);
+                    }
+                }
+                else {
+                    walk(curr.right, newNode);
+                }
             }
         } else {
             if (curr.left == null) {
                 curr.left = newNode;
+                ++curr.leftWeight;
                 newNode.parent = curr;
+                reverseWalk(curr);
             } else {
-                walk(curr, newNode);
+                if(curr.right == null)
+                {
+                    --curr.leftWeight;
+                    newNode.right = curr;
+                    ++newNode.rightWeight;
+                    newNode.parent = curr.parent;
+                    curr.parent = newNode;
+                    newNode.left = curr.left;
+                    curr.left.parent = newNode;
+                    curr.left = null;
+                    ++newNode.leftWeight;
+                    if(root == curr)
+                    {
+                        root = newNode;
+                    }
+                    else
+                    {
+                        newNode.parent.right = newNode;
+                        reverseWalk(newNode);
+                    }
+                }
+                else {
+                    walk(curr.left, newNode);
+                }
             }
         }
     }
