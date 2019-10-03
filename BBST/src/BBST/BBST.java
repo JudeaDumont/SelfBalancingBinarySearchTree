@@ -103,23 +103,47 @@ public class BBST<T extends Comparable> {
             } else {
                 if(curr.left == null)
                 {
-                    --curr.rightWeight;
-                    newNode.left = curr;
-                    ++newNode.leftWeight;
-                    newNode.parent = curr.parent;
-                    curr.parent = newNode;
-                    newNode.right = curr.right;
-                    curr.right.parent = newNode;
-                    curr.right = null;
-                    ++newNode.rightWeight;
-                    if(root == curr)
-                    {
-                        root = newNode;
+                    if (newNode.compareTo(curr.right) < 0) {
+                        --curr.rightWeight;
+                        newNode.left = curr;
+                        ++newNode.leftWeight;
+                        newNode.parent = curr.parent;
+                        curr.parent = newNode;
+                        newNode.right = curr.right;
+                        curr.right.parent = newNode;
+                        curr.right = null;
+                        ++newNode.rightWeight;
+                        if(root == curr)
+                        {
+                            root = newNode;
+                        }
+                        else
+                        {
+                            newNode.parent.left = newNode;
+                            reverseWalk(newNode);
+                        }
                     }
                     else
                     {
-                        newNode.parent.left = newNode;
-                        reverseWalk(newNode);
+                        curr.right.left = curr;
+                        curr.right.parent = curr.parent;
+                        curr.parent.right = curr.right;
+                        curr.parent = curr.right;
+                        curr.right.right = newNode;
+                        newNode.parent = curr.right;
+                        --curr.rightWeight;
+                        ++curr.right.rightWeight;
+                        ++curr.right.leftWeight;
+                        if(root == curr)
+                        {
+                            root = curr.right;
+                            curr.right = null;
+                        }
+                        else
+                        {
+                            curr.right = null;
+                            reverseWalk(newNode);
+                        }
                     }
                 }
                 else {
@@ -135,23 +159,47 @@ public class BBST<T extends Comparable> {
             } else {
                 if(curr.right == null)
                 {
-                    --curr.leftWeight;
-                    newNode.right = curr;
-                    ++newNode.rightWeight;
-                    newNode.parent = curr.parent;
-                    curr.parent = newNode;
-                    newNode.left = curr.left;
-                    curr.left.parent = newNode;
-                    curr.left = null;
-                    ++newNode.leftWeight;
-                    if(root == curr)
-                    {
-                        root = newNode;
+                    if (newNode.compareTo(curr.left) > 0) {
+                        --curr.leftWeight;
+                        newNode.right = curr;
+                        ++newNode.rightWeight;
+                        newNode.parent = curr.parent;
+                        curr.parent = newNode;
+                        newNode.left = curr.left;
+                        curr.left.parent = newNode;
+                        curr.left = null;
+                        ++newNode.leftWeight;
+                        if(root == curr)
+                        {
+                            root = newNode;
+                        }
+                        else
+                        {
+                            newNode.parent.right = newNode;
+                            reverseWalk(newNode);
+                        }
                     }
                     else
                     {
-                        newNode.parent.right = newNode;
-                        reverseWalk(newNode);
+                        curr.left.right = curr;
+                        curr.left.parent = curr.parent;
+                        curr.parent.left = curr.left;
+                        curr.parent = curr.left;
+                        curr.left.left = newNode;
+                        newNode.parent = curr.left;
+                        --curr.leftWeight;
+                        ++curr.left.leftWeight;
+                        ++curr.left.rightWeight;
+                        if(root == curr)
+                        {
+                            root = curr.left;
+                            curr.left = null;
+                        }
+                        else
+                        {
+                            curr.left = null;
+                            reverseWalk(newNode);
+                        }
                     }
                 }
                 else {
