@@ -96,23 +96,23 @@ public class BBST<T extends Comparable> {
     private void walk(Node curr, Node newNode) {
         if (newNode.compareTo(curr) > 0) {
             if (curr.right == null) {
-                ++curr.rightWeight;
                 curr.right = newNode;
+                ++curr.rightWeight;
                 newNode.parent = curr;
                 reverseWalk(curr);
             } else {
                 if(curr.left == null)
                 {
                     if (newNode.compareTo(curr.right) < 0) {
-                        --curr.rightWeight;
                         newNode.left = curr;
                         ++newNode.leftWeight;
                         newNode.parent = curr.parent;
                         curr.parent = newNode;
                         newNode.right = curr.right;
+                        ++newNode.rightWeight;
                         curr.right.parent = newNode;
                         curr.right = null;
-                        ++newNode.rightWeight;
+                        --curr.rightWeight;
                         if(root == curr)
                         {
                             root = newNode;
@@ -126,22 +126,31 @@ public class BBST<T extends Comparable> {
                     else
                     {
                         curr.right.left = curr;
-                        curr.right.parent = curr.parent;
-                        curr.parent.right = curr.right;
-                        curr.parent = curr.right;
-                        curr.right.right = newNode;
-                        newNode.parent = curr.right;
-                        --curr.rightWeight;
-                        ++curr.right.rightWeight;
                         ++curr.right.leftWeight;
+                        --curr.right.rightWeight;
+                        curr.right.parent = curr.parent;
+                        if (curr.parent != null) {
+                            if (curr.parent.right == curr) {
+                                curr.parent.right = curr.right;
+                                curr.parent = curr.right;
+                            } else {
+                                curr.parent.left = curr.right;
+                                curr.parent = curr.right;
+                            }
+                        }
+                        curr.right.right = newNode;
+                        ++curr.right.rightWeight;
+                        newNode.parent = curr.right;
                         if(root == curr)
                         {
                             root = curr.right;
                             curr.right = null;
+                            --curr.rightWeight;
                         }
                         else
                         {
                             curr.right = null;
+                            --curr.rightWeight;
                             reverseWalk(newNode);
                         }
                     }
@@ -150,7 +159,7 @@ public class BBST<T extends Comparable> {
                     walk(curr.right, newNode);
                 }
             }
-        } else {
+        } else if(newNode.compareTo(curr) < 0) {
             if (curr.left == null) {
                 curr.left = newNode;
                 ++curr.leftWeight;
@@ -160,15 +169,15 @@ public class BBST<T extends Comparable> {
                 if(curr.right == null)
                 {
                     if (newNode.compareTo(curr.left) > 0) {
-                        --curr.leftWeight;
                         newNode.right = curr;
                         ++newNode.rightWeight;
                         newNode.parent = curr.parent;
                         curr.parent = newNode;
                         newNode.left = curr.left;
+                        ++newNode.leftWeight;
                         curr.left.parent = newNode;
                         curr.left = null;
-                        ++newNode.leftWeight;
+                        --curr.leftWeight;
                         if(root == curr)
                         {
                             root = newNode;
@@ -182,22 +191,31 @@ public class BBST<T extends Comparable> {
                     else
                     {
                         curr.left.right = curr;
-                        curr.left.parent = curr.parent;
-                        curr.parent.left = curr.left;
-                        curr.parent = curr.left;
-                        curr.left.left = newNode;
-                        newNode.parent = curr.left;
-                        --curr.leftWeight;
-                        ++curr.left.leftWeight;
                         ++curr.left.rightWeight;
+                        --curr.left.leftWeight;
+                        curr.left.parent = curr.parent;
+                        if (curr.parent != null) {
+                            if (curr.parent.right == curr) {
+                                curr.parent.right = curr.left;
+                                curr.parent = curr.left;
+                            } else {
+                                curr.parent.left = curr.left;
+                                curr.parent = curr.left;
+                            }
+                        }
+                        curr.left.left = newNode;
+                        ++curr.left.leftWeight;
+                        newNode.parent = curr.left;
                         if(root == curr)
                         {
                             root = curr.left;
                             curr.left = null;
+                            --curr.leftWeight;
                         }
                         else
                         {
                             curr.left = null;
+                            --curr.leftWeight;
                             reverseWalk(newNode);
                         }
                     }
@@ -206,6 +224,10 @@ public class BBST<T extends Comparable> {
                     walk(curr.left, newNode);
                 }
             }
+        }
+        else
+        {
+            // don't do anything, the tree already contains that data, do a count?
         }
     }
 

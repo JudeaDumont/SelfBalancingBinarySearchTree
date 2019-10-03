@@ -3,9 +3,11 @@ package BBST;
 public class BBSTDriver {
     public static void main(String[] args) throws Exception {
         BBST<Integer> bbst = new BBST<Integer>();
-        bbst.add(8);
         bbst.add(16);
+        bbst.add(8);
+        bbst.add(12);
         bbst.add(10);
+        bbst.add(11);
         bbst.add(13);
         bbst.add(15);
         bbst.add(14);
@@ -16,6 +18,7 @@ public class BBSTDriver {
         bbst.add(3);
         bbst.add(2);
         bbst.add(1);
+        bbst.add(9);
 
         System.out.println(bbst.toString());
     }
