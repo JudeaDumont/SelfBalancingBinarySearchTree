@@ -66,7 +66,6 @@ public class BBST<T extends Comparable> {
     private void reverseWalk(Node current) {
         if(current == root)
         {
-
         }
         else if(current == current.parent.left)
         {
@@ -146,6 +145,7 @@ public class BBST<T extends Comparable> {
                             root = curr.right;
                             curr.right = null;
                             --curr.rightWeight;
+                            ++root.rightWeight;
                         }
                         else
                         {
@@ -211,6 +211,7 @@ public class BBST<T extends Comparable> {
                             root = curr.left;
                             curr.left = null;
                             --curr.leftWeight;
+                            ++root.leftWeight;
                         }
                         else
                         {
@@ -228,6 +229,58 @@ public class BBST<T extends Comparable> {
         else
         {
             // don't do anything, the tree already contains that data, do a count?
+            return;
+        }
+        balance();
+    }
+
+    private void balance() {
+        balance(root);
+    }
+
+    private void balance(Node curr) {
+        if(curr.rightWeight - curr.leftWeight > 3)
+        {
+            //get the left most node for rotating
+            Node temp = curr.right.left;
+            while(temp.left!=null)
+            {
+                temp = temp.left;
+            }
+            Node parentTemp = curr.parent;
+            curr.parent = temp.parent;
+            curr.parent.left = curr;
+            Node rightTemp = curr.right;
+            curr.right = temp;
+            temp.parent = curr;
+            if(curr == root)
+            {
+                root = rightTemp;
+            }
+            else
+            {
+                parentTemp.right = rightTemp;
+            }
+            rightTemp.parent = parentTemp;
+            curr.rightWeight = curr.right.rightWeight + 1;
+            curr.parent.leftWeight += curr.leftWeight + 1;
+            parentTemp = curr.parent;
+            while(parentTemp.parent!=null)
+            {
+                if(parentTemp.parent.left == parentTemp)
+                {
+                    parentTemp.parent.leftWeight += curr.leftWeight + 1;
+                }
+                else
+                {
+                    parentTemp.parent.rightWeight += curr.rightWeight + 1;
+                }
+                parentTemp = parentTemp.parent;
+            }
+        }
+        else if(curr.leftWeight - curr.rightWeight > 3)
+        {
+
         }
     }
 
