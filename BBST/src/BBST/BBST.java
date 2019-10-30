@@ -264,23 +264,66 @@ public class BBST<T extends Comparable> {
             rightTemp.parent = parentTemp;
             curr.rightWeight = curr.right.rightWeight + 1;
             curr.parent.leftWeight += curr.leftWeight + 1;
-            parentTemp = curr.parent;
-            while(parentTemp.parent!=null)
+            Node weightWalkNode = curr.parent;
+            while(weightWalkNode.parent != parentTemp)
             {
-                if(parentTemp.parent.left == parentTemp)
+                if(weightWalkNode.parent.left == weightWalkNode)
                 {
-                    parentTemp.parent.leftWeight += curr.leftWeight + 1;
+                    weightWalkNode.parent.leftWeight += curr.leftWeight + 1;
                 }
                 else
                 {
-                    parentTemp.parent.rightWeight += curr.rightWeight + 1;
+                    weightWalkNode.parent.rightWeight += curr.rightWeight + 1;
                 }
-                parentTemp = parentTemp.parent;
+                weightWalkNode = weightWalkNode.parent;
             }
         }
         else if(curr.leftWeight - curr.rightWeight > 3)
         {
-
+            //get the right most node for rotating
+            Node temp = curr.left.right;
+            while(temp.right!=null)
+            {
+                temp = temp.right;
+            }
+            Node parentTemp = curr.parent;
+            curr.parent = temp.parent;
+            curr.parent.right = curr;
+            Node leftTemp = curr.left;
+            curr.left = temp;
+            temp.parent = curr;
+            if(curr == root)
+            {
+                root = leftTemp;
+            }
+            else
+            {
+                parentTemp.left = leftTemp;
+            }
+            leftTemp.parent = parentTemp;
+            curr.leftWeight = curr.left.leftWeight + 1;
+            curr.parent.rightWeight += curr.rightWeight + 1;
+            Node weightWalkNode = curr.parent;
+            while(weightWalkNode.parent != parentTemp)
+            {
+                if(weightWalkNode.parent.right == weightWalkNode)
+                {
+                    weightWalkNode.parent.rightWeight += curr.rightWeight + 1;
+                }
+                else
+                {
+                    weightWalkNode.parent.leftWeight += curr.leftWeight + 1;
+                }
+                weightWalkNode = weightWalkNode.parent;
+            }
+        }
+        if(curr.right!=null)
+        {
+            balance(curr.right);
+        }
+        if(curr.left!=null)
+        {
+            balance(curr.left);
         }
     }
 
