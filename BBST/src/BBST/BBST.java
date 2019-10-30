@@ -1,6 +1,7 @@
 package BBST;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BBST<T extends Comparable> {
     private class Node implements Comparable {
@@ -329,32 +330,40 @@ public class BBST<T extends Comparable> {
 
     @Override
     public String toString() {
-        String aggregate = "";
-        Node current = root;
-        while (current.left != null) {
-            current = current.left;
-        }
-
-        while (current != null) {
-            if (current.left != null && !current.left.clean) {
-                current = current.left;
-            } else {
-                if (!current.clean) {
-                    aggregate = aggregate.concat(current.toString() + "\n");
-                    current.clean = true;
-                }
-                if (current.right != null && !current.right.clean) {
-                    current = current.right;
-                } else if ((current.right == null || current.right.clean) && (current.left == null || current.left.clean)) {
-                    current = current.parent;
-                }
+        ArrayList<Node> list = new ArrayList<Node>();
+        list.add(root);
+        StringBuilder s = new StringBuilder();
+        int levelAdd = 4;
+        int nextLevelAt = 2;
+        for(int i = 0; i < list.size(); ++i)
+        {
+            Node curr = list.get(i);
+            if(i == 0)
+            {
+                s.append(curr.data).append("\n");
+            }
+            else if(i == nextLevelAt)
+            {
+                s.append(curr.data).append("\n");
+                nextLevelAt += levelAdd;
+                levelAdd*=2;
+            }
+            else
+            {
+                s.append(curr.data).append(" ");
             }
 
+            Node left = curr.left;
+            Node right = curr.right;
+            if(left != null)
+            {
+                list.add(left);
+            }
+            if(right != null)
+            {
+                list.add(right);
+            }
         }
-        for (Node node : unorderedNodeList) {
-            node.clean = false;
-        }
-
-        return aggregate;
+        return s.toString();
     }
 }
