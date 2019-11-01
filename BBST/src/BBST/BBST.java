@@ -119,7 +119,14 @@ public class BBST<T extends Comparable> {
                         }
                         else
                         {
-                            newNode.parent.left = newNode;
+                            if(newNode.parent.left == curr)
+                            {
+                                newNode.parent.left = newNode;
+                            }
+                            else
+                            {
+                                newNode.parent.right = newNode;
+                            }
                             reverseWalk(newNode);
                         }
                     }
@@ -185,7 +192,14 @@ public class BBST<T extends Comparable> {
                         }
                         else
                         {
-                            newNode.parent.right = newNode;
+                            if(newNode.parent.left == curr)
+                            {
+                                newNode.parent.left = newNode;
+                            }
+                            else
+                            {
+                                newNode.parent.right = newNode;
+                            }
                             reverseWalk(newNode);
                         }
                     }
