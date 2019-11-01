@@ -344,6 +344,7 @@ public class BBST<T extends Comparable> {
 
     @Override
     public String toString() {
+        //todo: Missing leaves can cause irrelevant output
         ArrayList<Node> list = new ArrayList<Node>();
         list.add(root);
         StringBuilder s = new StringBuilder();
