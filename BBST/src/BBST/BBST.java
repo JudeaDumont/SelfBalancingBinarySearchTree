@@ -349,7 +349,7 @@ public class BBST<T extends Comparable> {
         StringBuilder s = new StringBuilder();
         int levelAdd = 4;
         int nextLevelAt = 2;
-        for(int i = 0; i < list.size(); ++i)
+        for(int i = 0; i != list.size(); ++i)
         {
             Node curr = list.get(i);
             if(i == 0)
