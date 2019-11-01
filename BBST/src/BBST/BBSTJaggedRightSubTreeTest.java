@@ -2,8 +2,6 @@ package BBST;
 
 public class BBSTJaggedRightSubTreeTest {
     public static void main(String[] args) throws Exception {
-        //Plan to get this test passing next.
-        //This test does not currently pass.
         BBST<Integer> bbst = new BBST<Integer>();
         bbst.add(8);
         bbst.add(16);
