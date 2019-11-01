@@ -1,6 +1,6 @@
 package BBST;
 
-public class BBSTJaggedRightSubtree {
+public class BBSTJaggedRightSubTreeTest {
     public static void main(String[] args) throws Exception {
         //Plan to get this test passing next.
         //This test does not currently pass.
