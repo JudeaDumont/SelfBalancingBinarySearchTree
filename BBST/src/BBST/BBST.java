@@ -1,7 +1,6 @@
 package BBST;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BBST<T extends Comparable> {
     private class Node implements Comparable {
@@ -30,7 +29,6 @@ public class BBST<T extends Comparable> {
     }
 
     public Node root = null;
-    public ArrayList<Node> unorderedNodeList = new ArrayList<Node>();
 
     private void weightDistribute(Node current) {
         if (current != null) {
@@ -43,13 +41,12 @@ public class BBST<T extends Comparable> {
             weightDistribute(current.parent);
         }
     }
-    //The pattern needs to rebalance/compensate upon addition of a new node
-    //rotate then add
-//    There are multiple types of self balancing binary search trees. implement aAVL, then red and black trees
-//    This will be a weight balanced tree from the weight at the root, you can tell the levels of each node.
-//    the max level of a given sub tree is log(n) of that subtree where n is the weight as measuring the number of nodes.
-    //blalala
-    //I guess I'll actually do something about this.
+    //  The pattern needs to re-balance/compensate upon addition of a new node
+    //  rotate then add
+    //    There are multiple types of self balancing binary search trees. implement aAVL, then red and black trees
+    //    This will be a weight balanced tree from the weight at the root, you can tell the levels of each node.
+    //    the max level of a given sub tree is log(n) of that subtree where n is the weight as measuring the number of nodes.
+
 
     //Amortized overhead or per operation overhead?
     public void add(T data) {
@@ -58,12 +55,9 @@ public class BBST<T extends Comparable> {
             root = newNode;
         } else {
             walk(root, newNode);
-            //rotate(newNode);
         }
     }
 
-    //determine left and right weight and if they are out of balance at a given node,
-    // perform a rotate specific to that unbalance
     private void reverseWalk(Node current) {
         if(current == root)
         {
@@ -71,19 +65,11 @@ public class BBST<T extends Comparable> {
         else if(current == current.parent.left)
         {
             ++current.parent.leftWeight;
-            if(current.parent.leftWeight - current.parent.rightWeight > 1)
-            {
-                //some kind of rotation
-            }
             reverseWalk(current.parent);
         }
         else if(current == current.parent.right)
         {
             ++current.parent.rightWeight;
-            if(Math.abs(current.parent.rightWeight - current.parent.leftWeight) > 1)
-            {
-                //some kind of rotation
-            }
             reverseWalk(current.parent);
         }
         else
@@ -92,7 +78,6 @@ public class BBST<T extends Comparable> {
         }
     }
 
-    //simple walk
     private void walk(Node curr, Node newNode) {
         if (newNode.compareTo(curr) > 0) {
             if (curr.right == null) {
@@ -249,6 +234,9 @@ public class BBST<T extends Comparable> {
         balance();
     }
 
+
+    //    Determine left and right weight and if they are out of balance at a given node,
+    //    Perform a rotate specific to that unbalance
     private void balance() {
         balance(root);
     }
@@ -256,7 +244,7 @@ public class BBST<T extends Comparable> {
     private void balance(Node curr) {
         if(curr.rightWeight - curr.leftWeight > 3)
         {
-            //get the left most node for rotating
+            //get the left most node of the right subtree for rotating
             Node temp = curr.right.left;
             while(temp.left!=null)
             {
@@ -295,7 +283,7 @@ public class BBST<T extends Comparable> {
         }
         else if(curr.leftWeight - curr.rightWeight > 3)
         {
-            //get the right most node for rotating
+            //get the right most node of the left sub tree for rotating
             Node temp = curr.left.right;
             while(temp.right!=null)
             {
